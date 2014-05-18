@@ -26,7 +26,6 @@ public abstract class AbstractNavDrawer extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drawer_layout);
-
 	}
 	
 	protected void createDrawer(ArrayAdapter<MyListItem> drawerAdapter) {
@@ -89,6 +88,7 @@ public abstract class AbstractNavDrawer extends Activity {
 					getApplicationContext().getPackageName() + "." + viewTag.substring(7));
 
 			intent.putExtra("filter", childView.getText());
+			intent.putExtra("itemSelected", position);
 			startActivity(intent);
 			
 		}else{
@@ -97,6 +97,8 @@ public abstract class AbstractNavDrawer extends Activity {
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			intent.setClassName(getApplicationContext().getPackageName(),
 					getApplicationContext().getPackageName() + "." + viewTag);
+			
+			intent.putExtra("itemSelected", position);
 			
 			startActivity(intent);
 		}

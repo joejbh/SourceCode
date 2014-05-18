@@ -41,51 +41,50 @@ public class MyArrayAdapter extends ArrayAdapter<MyListItem> {
 		
 		if (convertView == null) {
 			layout = (LinearLayout) myInflater.inflate(currentItem.getResourceLayout(), parent, false);
-			imageView = (ImageView) layout.findViewById(currentItem.getResourceImageView());
-			textView = (TextView) layout.findViewById(currentItem.getResourceTextView());
-			
-			
-			// If the ListItem is a header, disable the ability to click the item
-			if (currentItem.getType().equals("Header")) {
-				textView.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {}
-				});
-			}
-
-			ConnectivityManager connMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-		    
-
-			layout.setTag(currentItem.getActivityToStart());
-			
-			String imageUrl = currentItem.getImageUrl();
-			if (imageUrl != null){
-				if (networkInfo != null && networkInfo.isConnected()){
-			    	ImageDownloader imageDownloader = new ImageDownloader();
-			    	imageDownloader.download(imageUrl, imageView, imageView.getHeight(), imageView.getWidth());
-			    }
-			    else
-			    	Toast.makeText(getContext(), "Network Connection Error", Toast.LENGTH_SHORT).show();
-			}
-			else if (currentItem.getBitmapImage() != null){
-				imageView.setImageBitmap(currentItem.getBitmapImage());
-			}
-				
-			else{
-				imageView.setImageResource(currentItem.getIconResource());
-			}
-			
-			
-			textView.setText(currentItem.getText());
-			
-			// I used to use a CompoundDrawablesWithIntrinsicBounds on a textView, however, this didn't let
-			// me have the amount of control that I wanted.
-			// textView.setCompoundDrawablesWithIntrinsicBounds(currentItem.getIconResource(), null, null, null);
-			
 		} else {
 			layout = (LinearLayout) convertView;
 		}
+		
+		
+		
+		imageView = (ImageView) layout.findViewById(currentItem.getResourceImageView());
+		textView = (TextView) layout.findViewById(currentItem.getResourceTextView());
+		
+		
+		// If the ListItem is a header, disable the ability to click the item
+		if (currentItem.getType().equals("Header")) {
+			textView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {}
+			});
+		}
+
+		ConnectivityManager connMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    
+		layout.setTag(currentItem.getActivityToStart());
+		
+		String imageUrl = currentItem.getImageUrl();
+		if (imageUrl != null){
+			if (networkInfo != null && networkInfo.isConnected()){
+		    	ImageDownloader imageDownloader = new ImageDownloader();
+		    	imageDownloader.download(imageUrl, imageView, imageView.getHeight(), imageView.getWidth());
+		    }
+		    else
+		    	Toast.makeText(getContext(), "Network Connection Error", Toast.LENGTH_SHORT).show();
+		}
+		else if (currentItem.getBitmapImage() != null){
+			imageView.setImageBitmap(currentItem.getBitmapImage());
+		}
+			
+		else{
+			imageView.setImageResource(currentItem.getIconResource());
+		}
+		
+		textView.setText(currentItem.getText());
+		
+		
+		
 		return layout;
 	}
 
